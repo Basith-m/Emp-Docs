@@ -27,7 +27,7 @@ function Login() {
                     <Form.Control type="password" placeholder="Enter Password" />
                   </Form.Group>
                   <div>
-                    <button style={{textTransform:'capitalize',fontSize:'1rem'}} className='btn btn-primary mb-2 w-100'>Register</button>
+                    <button style={{textTransform:'capitalize',fontSize:'1rem'}} className='btn btn-primary mb-2 w-100'>Login</button>
                     <p className='text-secondary'>New User? Click here to <Link className='text-primary' to={'/register'}>Register</Link></p>
                   </div>
                 </Form>
