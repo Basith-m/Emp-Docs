@@ -4,22 +4,54 @@ import defaultProfile from '../Assets/Images/default-profile.png'
 import { Link } from 'react-router-dom'
 
 function ViewEmployee() {
+  const cellStyle = {
+    border: 'none',
+    padding: '10px',
+  };
   return (
-    <div style={{ height: '89vh' }} className='d-flex flex-column align-items-center justify-content-center'>
+    <div style={{marginTop:'50px'}} className='d-flex flex-column align-items-center justify-content-center'>
       <Link to={'/employees'} style={{ textDecoration: 'none', color: 'blue' }} className='fs-5 mb-3'><i class="fa-solid fa-arrow-left fa-beat-fade me-3"></i>All Employees</Link>
       <Row className='w-75 shadow p-4 rounded'>
         <Col sm={12} md={4} className='d-flex align-items-center p-3'>
           <img className='rounded-3' width={'300px'} src={defaultProfile} alt="Employee Profile" />
         </Col>
         <Col sm={12} md={8} className='d-flex flex-column justify-content-center p-3'>
-          <h4>Name : <span className='text-warning'>Abdul Basith M</span></h4>
-          <h4>Employee ID : <span className='text-warning'>A101</span></h4>
-          <h4>Department/Position  : <span className='text-warning'>Superviser</span></h4>
-          <h4>Date of Birth : <span className='text-warning'>08-09-2001</span></h4>
-          <h4>Gender : <span className='text-warning'>Male</span></h4>
-          <h4>Address : <span className='text-warning'>Mulayath House , Edarikkode P.O , Malappuram Kerala 676501</span></h4>
-          <h4>Joined Date : <span className='text-warning'>06-07-2023</span></h4>
-          <h4>Salary : <span className='text-warning'>12000</span></h4>
+          <table className='table'>
+            <tbody>
+              <tr>
+                <th className='text-muted' style={cellStyle}>Name:</th>
+                <td className='text-warning' style={cellStyle}>Abdul Basith M</td>
+              </tr>
+              <tr>
+                <th className='text-muted' style={cellStyle}>Employee ID:</th>
+                <td className='text-warning' style={cellStyle}>A101</td>
+              </tr>
+              <tr>
+                <th className='text-muted' style={cellStyle}>Department/Position:</th>
+                <td className='text-warning' style={cellStyle}>Supervisor</td>
+              </tr>
+              <tr>
+                <th className='text-muted' style={cellStyle}>Date of Birth:</th>
+                <td className='text-warning' style={cellStyle}>08-09-2001</td>
+              </tr>
+              <tr>
+                <th className='text-muted' style={cellStyle}>Gender:</th>
+                <td className='text-warning' style={cellStyle}>Male</td>
+              </tr>
+              <tr>
+                <th className='text-muted' style={cellStyle}>Address:</th>
+                <td className='text-warning' style={cellStyle}>Mulayath House, Edarikkode P.O, Malappuram Kerala 676501</td>
+              </tr>
+              <tr>
+                <th className='text-muted' style={cellStyle}>Joined Date:</th>
+                <td className='text-warning' style={cellStyle}>06-07-2023</td>
+              </tr>
+              <tr>
+                <th className='text-muted' style={cellStyle}>Salary:</th>
+                <td className='text-warning' style={cellStyle}>$12,000</td>
+              </tr>
+            </tbody>
+          </table>
         </Col>
       </Row>
       <div className='mt-4'>

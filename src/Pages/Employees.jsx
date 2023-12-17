@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 function Employees() {
   return (
-    <div style={{ minHeight: '87vh' }} className='container w-100 pt-3'>
+    <div style={{marginTop:'30px'}} className='container w-100'>
       <Link to={'/'} style={{ textDecoration: 'none', color: 'blue'}} className='fs-5'><i class="fa-solid fa-arrow-left fa-beat-fade me-3"></i>Back to home</Link>
       <div style={{ height: "140px", background: "url('https://t4.ftcdn.net/jpg/04/95/28/65/360_F_495286577_rpsT2Shmr6g81hOhGXALhxWOfx1vOQBa.jpg')", backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className='rounded mt-3 shadow d-flex flex-column justify-content-center px-5'>
         <span className='text-light mb-3'>Firm Name :</span>
