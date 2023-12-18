@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import bannerImg from '../Assets/Images/banner-img.png'
 import { useNavigate } from 'react-router-dom'
+import { tokenAuthorisationContext } from '../Context/TokenAuth'
 
 function Home() {
   const navigate = useNavigate()
+  const {isAuthorized,setIsAuthorized} = useContext(tokenAuthorisationContext)
   const handleClick =()=>{
-    navigate('/login')
+    if(isAuthorized){
+      navigate('/employees')
+    }else{
+      navigate('/login')
+    }
   }
   return (
     <div style={{ height: '89vh', backgroundColor: 'lavender' }} className='d-flex align-items-center justify-content-center'>

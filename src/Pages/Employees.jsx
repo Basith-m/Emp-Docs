@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import AddEmp from '../Components/AddEmp'
 
 function Employees() {
+  const [existingUser,setExistingUser] = useState({})
+  useEffect(()=>{
+    if(sessionStorage.getItem("existingUser")){
+      setExistingUser(JSON.parse(sessionStorage.getItem("existingUser")));
+      // console.log(existingUser);
+    }
+  },[])
   return (
     <div style={{marginTop:'30px'}} className='container w-100'>
       <Link to={'/'} style={{ textDecoration: 'none', color: 'blue'}} className='fs-5'><i class="fa-solid fa-arrow-left fa-beat-fade me-3"></i>Back to home</Link>
       <div style={{ height: "140px", background: "url('https://t4.ftcdn.net/jpg/04/95/28/65/360_F_495286577_rpsT2Shmr6g81hOhGXALhxWOfx1vOQBa.jpg')", backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className='rounded mt-3 shadow d-flex flex-column justify-content-center px-5'>
         <span className='text-light mb-3'>Firm Name :</span>
-        <h1 className='text-white'>Firm Name</h1>
+        <h1 className='text-white'>{existingUser.firm}</h1>
       </div>
       <div className='d-flex flex-wrap align-items-center justify-content-evenly mt-5'>
         <div className='d-flex flex-wrap align-items-center justify-content-between'>
@@ -23,10 +31,7 @@ function Employees() {
           </div>
         </div>
         <div className='d-flex'>
-          <button className='btn btn-outline-danger text-capitalize fs-5 mx-2'>
-            <i class="fa-solid fa-user-plus me-3"></i>
-            Add Employee
-          </button>
+        <AddEmp />
           <button className='btn btn-outline-primary text-capitalize fs-5 ms-2'>
             <i class="fa-solid fa-file-export me-3"></i>
             Export
