@@ -1,91 +1,59 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Button, Modal } from 'react-bootstrap'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import profileImage from '../Assets/Images/default-profile-2.png'
-import { addEmployeeAPI } from '../Services/allAPI';
-import { addEmployeeResponseContext } from '../Context/ContextShare';
+import React, { useEffect, useState } from 'react'
+import { Button, Modal } from 'react-bootstrap';
+import { SERVER_URL } from '../Services/serverUrl';
 
-function AddEmp() {
+function EditEmp({ employee }) {
   const [show, setShow] = useState(false);
+
   const [empDetails, setEmpDetails] = useState({
-    name: "", empID: "", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
+    id: employee._id,
+    name: employee.name,
+    empID: employee.employeeID,
+    position: employee.position,
+    DOB: employee.DOB,
+    gender: employee.gender,
+    address: employee.address,
+    joinDate: employee.joinDate,
+    salary: employee.salary,
+    empImage: ""
   })
-  // state for holding converted uploading image url
-  const [preview, setPreview] = useState("")
-  const [token, setToken] = useState("")
+
   // console.log(empDetails);
 
-  const{addEmpolyeeResponse,setAddEmployeeResponse} = useContext(addEmployeeResponseContext)
+  // state for holding converted uploading image url
+  const [preview, setPreview] = useState("")
+
   // modal open
   const handleShow = () => setShow(true);
-  // modal close
+  //  modal close
   const handleClose = () => {
     setShow(false);
     setEmpDetails({
-      name: "", empID: "", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
+      id: employee._id,
+      name: employee.name,
+      empID: employee.employeeID,
+      position: employee.position,
+      DOB: employee.DOB,
+      gender: employee.gender,
+      address: employee.address,
+      joinDate: employee.joinDate,
+      salary: employee.salary,
+      empImage: ""
     })
-    setPreview("")
-  }
-
-  // function for add employee
-  const handleAdd = async (e) => {
-    e.preventDefault()
-    const { name, empID, position, DOB, gender, address, joinDate, salary, empImage } = empDetails
-    if (!name || !empID || !position || !DOB || !gender || !address || !joinDate || !salary || !empImage) {
-      toast.info("Please fill the form completely!!!")
-    } else {
-      // req Body
-      const reqBody = new FormData()
-      reqBody.append("name", name)
-      reqBody.append("empID", empID)
-      reqBody.append("position", position)
-      reqBody.append("DOB", DOB)
-      reqBody.append("gender", gender)
-      reqBody.append("address", address)
-      reqBody.append("joinDate", joinDate)
-      reqBody.append("salary", salary)
-      reqBody.append("empImage", empImage)
-      if (token) {
-        // req Header
-        const reqHeader = {
-          "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${token}`
-        }
-        // api call
-        const result = await addEmployeeAPI(reqBody, reqHeader)
-        if (result.status === 200) {
-          console.log(result.data);
-          handleClose()
-          toast.success("Added Successfully..")
-          setAddEmployeeResponse(result.data)
-        } else {
-          console.log(result);
-          toast.warning(result.response.data)
-        }
-      }
-    }
   }
 
   useEffect(() => {
     if (empDetails.empImage) {
-      // converting uploaded image into url format
+      // converting into url format
       setPreview(URL.createObjectURL(empDetails.empImage))
     }
   }, [empDetails.empImage])
-  // get token
-  useEffect(() => {
-    if (sessionStorage.getItem("token")) {
-      setToken(sessionStorage.getItem("token"))
-    } else {
-      setToken("")
-    }
-  }, [])
+
   return (
     <>
-      <button className='btn btn-outline-danger text-capitalize fs-5 mx-2 p-2' onClick={handleShow}>
-        <i className="fa-solid fa-user-plus me-3"></i>
-        Add Employee
+      <button style={{ fontSize: '1.2rem', width: '120px' }} className='btn btn-outline-success text-capitalize mx-2 py-2' onClick={handleShow}>
+        <i className="fa-solid fa-pen me-3"></i>
+        Edit
       </button>
 
       {/* modal */}
@@ -107,8 +75,8 @@ function AddEmp() {
                 <img
                   width={'300px'}
                   className="img-fluid rounded"
-                  src={preview ? preview : profileImage}
                   alt="EmployeeImage"
+                  src={preview ? preview : `${SERVER_URL}/uploads/${empDetails.empImage}`}
                 />
               </label>
             </div>
@@ -116,8 +84,8 @@ function AddEmp() {
             <div className="col-lg-6 p-3">
               <div className="mb-3 ">
                 <input
-                  value={empDetails.name}
                   onChange={e => setEmpDetails({ ...empDetails, name: e.target.value })}
+                  value={empDetails.name}
                   type="text"
                   className="form-control"
                   placeholder="Name"
@@ -125,8 +93,8 @@ function AddEmp() {
               </div>
               <div className="mb-3">
                 <input
-                  value={empDetails.empID}
                   onChange={e => setEmpDetails({ ...empDetails, empID: e.target.value })}
+                  value={empDetails.empID}
                   type="text"
                   className="form-control"
                   placeholder="Employee ID"
@@ -134,8 +102,8 @@ function AddEmp() {
               </div>
               <div className="mb-3">
                 <input
-                  value={empDetails.position}
                   onChange={e => setEmpDetails({ ...empDetails, position: e.target.value })}
+                  value={empDetails.position}
                   type="text"
                   className="form-control"
                   placeholder="Department/Position"
@@ -144,17 +112,17 @@ function AddEmp() {
               <div className="mb-3">
                 <label className='text-secondary' htmlFor="dob">Date of Birth:</label>
                 <input
-                  id='dob'
-                  value={empDetails.DOB}
                   onChange={e => setEmpDetails({ ...empDetails, DOB: e.target.value })}
+                  value={empDetails.DOB}
+                  id='dob'
                   type="date"
                   className="form-control"
                 />
               </div>
               <div className="mb-3">
                 <input
-                  value={empDetails.gender}
                   onChange={e => setEmpDetails({ ...empDetails, gender: e.target.value })}
+                  value={empDetails.gender}
                   type="text"
                   className="form-control"
                   placeholder="Gender"
@@ -162,8 +130,8 @@ function AddEmp() {
               </div>
               <div className="mb-3">
                 <textarea
-                  value={empDetails.address}
                   onChange={e => setEmpDetails({ ...empDetails, address: e.target.value })}
+                  value={empDetails.address}
                   type="text"
                   className="form-control"
                   placeholder="Address"
@@ -172,17 +140,17 @@ function AddEmp() {
               <div className="mb-3">
                 <label className='text-secondary' htmlFor="joinDate">Joined Date:</label>
                 <input
-                  id='joinDate'
-                  value={empDetails.joinDate}
                   onChange={e => setEmpDetails({ ...empDetails, joinDate: e.target.value })}
+                  value={empDetails.joinDate}
+                  id='joinDate'
                   type="date"
                   className="form-control"
                 />
               </div>
               <div className="mb-3">
                 <input
-                  value={empDetails.salary}
                   onChange={e => setEmpDetails({ ...empDetails, salary: e.target.value })}
+                  value={empDetails.salary}
                   type="number"
                   className="form-control"
                   placeholder="Salary"
@@ -195,16 +163,11 @@ function AddEmp() {
           <Button style={{ width: '80px' }} variant="danger" onClick={handleClose}>
             Cancel
           </Button>
-          <Button style={{ width: '80px' }} variant="success" onClick={handleAdd}>ADD</Button>
+          <Button style={{ width: '80px' }} variant="success">Update</Button>
         </Modal.Footer>
       </Modal>
-      <ToastContainer
-        position="top-right"
-        closeOnClick
-        theme="dark"
-      ></ToastContainer>
     </>
   )
 }
 
-export default AddEmp
+export default EditEmp
