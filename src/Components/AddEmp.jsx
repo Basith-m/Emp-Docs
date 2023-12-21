@@ -9,7 +9,7 @@ import { addEmployeeResponseContext } from '../Context/ContextShare';
 function AddEmp() {
   const [show, setShow] = useState(false);
   const [empDetails, setEmpDetails] = useState({
-    name: "", empID: "", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
+    name: "", employeeID: "", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
   })
   // state for holding converted uploading image url
   const [preview, setPreview] = useState("")
@@ -23,7 +23,7 @@ function AddEmp() {
   const handleClose = () => {
     setShow(false);
     setEmpDetails({
-      name: "", empID: "", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
+      name: "", employeeID: "", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
     })
     setPreview("")
   }
@@ -31,14 +31,14 @@ function AddEmp() {
   // function for add employee
   const handleAdd = async (e) => {
     e.preventDefault()
-    const { name, empID, position, DOB, gender, address, joinDate, salary, empImage } = empDetails
-    if (!name || !empID || !position || !DOB || !gender || !address || !joinDate || !salary || !empImage) {
+    const { name, employeeID, position, DOB, gender, address, joinDate, salary, empImage } = empDetails
+    if (!name || !employeeID || !position || !DOB || !gender || !address || !joinDate || !salary || !empImage) {
       toast.info("Please fill the form completely!!!")
     } else {
       // req Body
       const reqBody = new FormData()
       reqBody.append("name", name)
-      reqBody.append("empID", empID)
+      reqBody.append("employeeID", employeeID)
       reqBody.append("position", position)
       reqBody.append("DOB", DOB)
       reqBody.append("gender", gender)
@@ -125,8 +125,8 @@ function AddEmp() {
               </div>
               <div className="mb-3">
                 <input
-                  value={empDetails.empID}
-                  onChange={e => setEmpDetails({ ...empDetails, empID: e.target.value })}
+                  value={empDetails.employeeID}
+                  onChange={e => setEmpDetails({ ...empDetails, employeeID: e.target.value })}
                   type="text"
                   className="form-control"
                   placeholder="Employee ID"

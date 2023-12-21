@@ -17,8 +17,15 @@ export const addEmployeeAPI = async (reqBody,reqHeader)=>{
 export const allEmployeeAPI = async (searchKey,reqHeader)=>{
     return await commonAPI("GET",`${SERVER_URL}/employees/all?search=${searchKey}`,"",reqHeader)
 } 
-
 // get a single employee
 export const getAEmployeeAPI = async (empId,reqHeader)=>{
     return await commonAPI("GET",`${SERVER_URL}/employees/${empId}`,"",reqHeader)
+}
+// edit employee details
+export const editEmployeeAPI = async (empId,reqBody,reqHeader)=>{
+    return await commonAPI("PUT",`${SERVER_URL}/employees/edit/${empId}`,reqBody,reqHeader)
+}
+// delete employee
+export const deleteEmployeeAPI = async (empId,reqHeader)=>{
+    return await commonAPI("DELETE",`${SERVER_URL}/employees/remove/${empId}`,{},reqHeader)
 }

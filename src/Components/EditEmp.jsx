@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap';
 import { SERVER_URL } from '../Services/serverUrl';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { editEmployeeAPI } from '../Services/allAPI';
+import { editEmployeeResponseContext } from '../Context/ContextShare';
 
 function EditEmp({ employee }) {
-  const [show, setShow] = useState(false);
 
+  const {editEmployeeResponse, setEditEmployeeResponse} = useContext(editEmployeeResponseContext)
+
+  const [show, setShow] = useState(false);;
   const [empDetails, setEmpDetails] = useState({
     id: employee._id,
     name: employee.name,
-    empID: employee.employeeID,
+    employeeID: employee.employeeID,
     position: employee.position,
     DOB: employee.DOB,
     gender: employee.gender,
@@ -18,7 +24,7 @@ function EditEmp({ employee }) {
     empImage: ""
   })
 
-  // console.log(empDetails);
+//  console.log(employee);
 
   // state for holding converted uploading image url
   const [preview, setPreview] = useState("")
@@ -31,7 +37,7 @@ function EditEmp({ employee }) {
     setEmpDetails({
       id: employee._id,
       name: employee.name,
-      empID: employee.employeeID,
+      employeeID: employee.employeeID,
       position: employee.position,
       DOB: employee.DOB,
       gender: employee.gender,
@@ -40,6 +46,58 @@ function EditEmp({ employee }) {
       salary: employee.salary,
       empImage: ""
     })
+    setPreview("")
+  }
+
+  const handleUpdate = async ()=>{
+    const {id,name,employeeID,position,DOB,gender,address,joinDate,salary,empImage} = empDetails
+    if (!name || !employeeID || !position || !DOB || !gender || !address || !joinDate || !salary) {
+      toast.info("Please fill the form completely!!!")
+    }else{
+      // api call
+      const reqBody = new FormData()
+      reqBody.append("name", name)
+      reqBody.append("employeeID", employeeID)
+      reqBody.append("position", position)
+      reqBody.append("DOB", DOB)
+      reqBody.append("gender", gender)
+      reqBody.append("address", address)
+      reqBody.append("joinDate", joinDate)
+      reqBody.append("salary", salary)
+      preview?reqBody.append("empImage",empImage):reqBody.append("empImage",employee.empImage)
+      const token = sessionStorage.getItem("token")
+      if(preview){
+        const reqHeader = {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`
+        }
+        // api call
+        const result = await editEmployeeAPI(id,reqBody,reqHeader)
+        if(result.status === 200){
+          handleClose()
+          // pass response to view employee
+          setEditEmployeeResponse(result.data)
+        }else{
+          console.log(result);
+          toast.err(result.response.data)
+        }
+      }else{
+        const reqHeader = {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+        // api call
+        const result = await editEmployeeAPI(id,reqBody,reqHeader)
+        if(result.status === 200){
+          handleClose()
+          // pass response to view employee
+          setEditEmployeeResponse(result.data)
+        }else{
+          console.log(result);
+          toast.error(result.response.data)
+        }
+      }
+    }
   }
 
   useEffect(() => {
@@ -65,7 +123,7 @@ function EditEmp({ employee }) {
         size='lg'
       >
         <Modal.Header closeButton>
-          <Modal.Title>Employee Details</Modal.Title>
+          <Modal.Title>Edit Employee Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="row">
@@ -76,7 +134,7 @@ function EditEmp({ employee }) {
                   width={'300px'}
                   className="img-fluid rounded"
                   alt="EmployeeImage"
-                  src={preview ? preview : `${SERVER_URL}/uploads/${empDetails.empImage}`}
+                  src={preview ? preview : `${SERVER_URL}/uploads/${employee.empImage}`}
                 />
               </label>
             </div>
@@ -93,8 +151,8 @@ function EditEmp({ employee }) {
               </div>
               <div className="mb-3">
                 <input
-                  onChange={e => setEmpDetails({ ...empDetails, empID: e.target.value })}
-                  value={empDetails.empID}
+                  onChange={e => setEmpDetails({ ...empDetails, employeeID: e.target.value })}
+                  value={empDetails.employeeID}
                   type="text"
                   className="form-control"
                   placeholder="Employee ID"
@@ -163,9 +221,14 @@ function EditEmp({ employee }) {
           <Button style={{ width: '80px' }} variant="danger" onClick={handleClose}>
             Cancel
           </Button>
-          <Button style={{ width: '80px' }} variant="success">Update</Button>
+          <Button style={{ width: '80px' }} variant="success" onClick={handleUpdate}>Update</Button>
         </Modal.Footer>
       </Modal>
+      <ToastContainer
+        position="top-right"
+        closeOnClick
+        theme="dark"
+      ></ToastContainer>
     </>
   )
 }

@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
-import { Link, useParams } from 'react-router-dom'
-import { getAEmployeeAPI } from '../Services/allAPI';
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { deleteEmployeeAPI, getAEmployeeAPI } from '../Services/allAPI';
 import { SERVER_URL } from '../Services/serverUrl';
 import EditEmp from '../Components/EditEmp';
+import { editEmployeeResponseContext } from '../Context/ContextShare';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ViewEmployee() {
+
+  const navigate = useNavigate()
+  const { editEmployeeResponse, setEditEmployeeResponse } = useContext(editEmployeeResponseContext)
+
   const cellStyle = {
     border: 'none',
     padding: '10px',
@@ -35,9 +42,25 @@ function ViewEmployee() {
     }
   }
   // console.log(employeeDetails);
+
+  const handleDelete = async (id) => {
+    const token = sessionStorage.getItem("token")
+    const reqHeader = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    }
+    // api call
+    const result = await deleteEmployeeAPI(id,reqHeader)
+    if(result.status===200){
+      navigate('/employees')
+    }else{
+      toast.error(result.response.data)
+    }
+  }
+
   useEffect(() => {
     getEmployeeDetails()
-  }, [])
+  }, [editEmployeeResponse])
 
   return (
     <div style={{ marginTop: '50px' }} className='d-flex flex-column align-items-center justify-content-center'>
@@ -85,13 +108,18 @@ function ViewEmployee() {
           </table>
         </Col>
       </Row>
-      <div className='mt-4'>
+      <div className='mt-4 d-flex'>
         <EditEmp employee={employeeDetails} />
-        <button style={{ fontSize: '1.2rem', width: '120px' }} className='btn btn-outline-danger text-capitalize mx-2 py-2'>
-          <i className  ="fa-solid fa-trash me-3"></i>
+        <button style={{ fontSize: '1.2rem', width: '120px' }} className='btn btn-outline-danger text-capitalize mx-2 py-2' onClick={() => handleDelete(employeeDetails._id)}>
+          <i className="fa-solid fa-trash me-3"></i>
           Delete
         </button>
       </div>
+      <ToastContainer
+        position="top-right"
+        closeOnClick
+        theme="dark"
+      ></ToastContainer>
     </div>
   )
 }

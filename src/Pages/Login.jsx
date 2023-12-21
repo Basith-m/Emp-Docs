@@ -25,11 +25,11 @@ function Login() {
       if(result.status===200){
         sessionStorage.setItem("existingUser",JSON.stringify(result.data.existingUser))
         sessionStorage.setItem("token",result.data.token)
+        setIsAuthorized(true)
         setUser({
           email:"",
           password:""
         })
-        setIsAuthorized(true)
         navigate('/employees')
       }else{
         toast.warning(result.response.data)
@@ -52,11 +52,11 @@ function Login() {
                   Sign In to your Account
                 </h5>
                 <Form className='text-light w-75'>
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Group className="mb-3">
                     <Form.Control type="email" placeholder="Enter Email ID" onChange={e=>setUser({...user,email:e.target.value})} />
                   </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Group className="mb-3">
                     <Form.Control type="password" placeholder="Enter Password" onChange={e=>setUser({...user,password:e.target.value})} />
                   </Form.Group>
                   <div>
