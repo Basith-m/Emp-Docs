@@ -14,8 +14,8 @@ export const addEmployeeAPI = async (reqBody,reqHeader)=>{
     return await commonAPI("POST",`${SERVER_URL}/employee/add`,reqBody,reqHeader)
 }
 // get all employee - with search key as query parameter
-export const allEmployeeAPI = async (searchKey,reqHeader)=>{
-    return await commonAPI("GET",`${SERVER_URL}/employees/all?search=${searchKey}`,"",reqHeader)
+export const allEmployeeAPI = async (searchKey,firm,reqHeader)=>{
+    return await commonAPI("GET",`${SERVER_URL}/employees/all?search=${searchKey}&firm=${firm}`,"",reqHeader)
 } 
 // get a single employee
 export const getAEmployeeAPI = async (empId,reqHeader)=>{

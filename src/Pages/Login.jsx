@@ -39,7 +39,7 @@ function Login() {
   }
   return (
     <div style={{ height: '89vh', backgroundColor: 'lavender' }} className='d-flex flex-column align-items-center justify-content-center'>
-      <Link to={'/'} style={{ textDecoration: 'none', color: 'blue'}} className='fs-5 mb-3'><i class="fa-solid fa-arrow-left fa-beat-fade me-3"></i>Back to home</Link>
+      <Link to={'/'} style={{ textDecoration: 'none', color: 'blue'}} className='fs-5 mb-3'><i className="fa-solid fa-arrow-left fa-beat-fade me-3"></i>Back to home</Link>
       <div className='w-75 container'> 
         <div className='card shadow p-5' style={{backgroundColor:'lavender'}}>
           <div className='row align-items-center'>

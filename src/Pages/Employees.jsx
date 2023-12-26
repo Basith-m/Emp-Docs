@@ -7,7 +7,7 @@ import { addEmployeeResponseContext } from '../Context/ContextShare'
 
 function Employees() {
   const navigate = useNavigate()
-  const [existingUser, setExistingUser] = useState({})
+  const [firm, setFirm] = useState("")
   const [allEmployee, setAllEmployee] = useState([])
   // state for storing search key
   const [searchKey, setSearchKey] = useState("")
@@ -17,12 +17,13 @@ function Employees() {
   const getAllEmployee = async () => {
     if (sessionStorage.getItem("token")) {
       const token = sessionStorage.getItem("token")
+      const firm = JSON.parse(sessionStorage.getItem("existingUser")).firm
       const reqHeader = {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       }
       // api call
-      const result = await allEmployeeAPI(searchKey, reqHeader)
+      const result = await allEmployeeAPI(searchKey,firm, reqHeader)
       if (result.status === 200) {
         setAllEmployee(result.data)
       } else {
@@ -55,8 +56,7 @@ function Employees() {
 
   useEffect(() => {
     if (sessionStorage.getItem("existingUser")) {
-      setExistingUser(JSON.parse(sessionStorage.getItem("existingUser")));
-      // console.log(existingUser);
+      setFirm(JSON.parse(sessionStorage.getItem("existingUser")).firm);
     }
     getAllEmployee()
   }, [addEmpolyeeResponse,searchKey])
@@ -66,7 +66,7 @@ function Employees() {
       <Link to={'/'} style={{ textDecoration: 'none', color: 'blue' }} className='fs-5'><i className="fa-solid fa-arrow-left fa-beat-fade me-3"></i>Back to home</Link>
       <div style={{ height: "140px", background: "url('https://t4.ftcdn.net/jpg/04/95/28/65/360_F_495286577_rpsT2Shmr6g81hOhGXALhxWOfx1vOQBa.jpg')", backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }} className='rounded mt-3 shadow d-flex flex-column justify-content-center px-5'>
         <span className='text-light mb-3'>Firm Name :</span>
-        <h1 className='text-white'>{existingUser.firm}</h1>
+        <h1 className='text-white'>{firm}</h1>
       </div>
       <Row className='py-3 my-3 align-items-center justify-content-between'>
         <Col md={12} lg={3}>

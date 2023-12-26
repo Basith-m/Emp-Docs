@@ -9,7 +9,7 @@ import { addEmployeeResponseContext } from '../Context/ContextShare';
 function AddEmp() {
   const [show, setShow] = useState(false);
   const [empDetails, setEmpDetails] = useState({
-    name: "", employeeID: "", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
+    name: "", employeeID: "",firm:"", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
   })
   // state for holding converted uploading image url
   const [preview, setPreview] = useState("")
@@ -23,7 +23,7 @@ function AddEmp() {
   const handleClose = () => {
     setShow(false);
     setEmpDetails({
-      name: "", employeeID: "", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
+      name: "", employeeID: "", firm:"", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
     })
     setPreview("")
   }
@@ -31,14 +31,15 @@ function AddEmp() {
   // function for add employee
   const handleAdd = async (e) => {
     e.preventDefault()
-    const { name, employeeID, position, DOB, gender, address, joinDate, salary, empImage } = empDetails
-    if (!name || !employeeID || !position || !DOB || !gender || !address || !joinDate || !salary || !empImage) {
+    const { name, employeeID, firm, position, DOB, gender, address, joinDate, salary, empImage } = empDetails
+    if (!name || !employeeID || !firm || !position || !DOB || !gender || !address || !joinDate || !salary || !empImage) {
       toast.info("Please fill the form completely!!!")
     } else {
       // req Body
       const reqBody = new FormData()
       reqBody.append("name", name)
       reqBody.append("employeeID", employeeID)
+      reqBody.append("firm", firm)
       reqBody.append("position", position)
       reqBody.append("DOB", DOB)
       reqBody.append("gender", gender)
@@ -130,6 +131,15 @@ function AddEmp() {
                   type="text"
                   className="form-control"
                   placeholder="Employee ID"
+                />
+              </div>
+              <div className="mb-3 ">
+                <input
+                  value={empDetails.firm}
+                  onChange={e => setEmpDetails({ ...empDetails, firm: e.target.value })}
+                  type="text"
+                  className="form-control"
+                  placeholder="Firm Name"
                 />
               </div>
               <div className="mb-3">
