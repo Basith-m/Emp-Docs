@@ -4,25 +4,27 @@ import { SERVER_URL } from '../Services/serverUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { editEmployeeAPI } from '../Services/allAPI';
-import { editEmployeeResponseContext } from '../Context/ContextShare';
+import { editEmployeeResponseContext, employeeDetailsContext } from '../Context/ContextShare';
 
-function EditEmp({ employee }) {
+function EditEmp() {
 
   const {editEmployeeResponse, setEditEmployeeResponse} = useContext(editEmployeeResponseContext)
+  const { employeeDetails, setEmployeeDetails } = useContext(employeeDetailsContext)
 
   const [show, setShow] = useState(false);;
   const [empDetails, setEmpDetails] = useState({
-    id: employee._id,
-    name: employee.name,
-    employeeID: employee.employeeID,
-    position: employee.position,
-    DOB: employee.DOB,
-    gender: employee.gender,
-    address: employee.address,
-    joinDate: employee.joinDate,
-    salary: employee.salary,
+    id: employeeDetails._id,
+    name: employeeDetails.name,
+    employeeID: employeeDetails.employeeID,
+    position: employeeDetails.position,
+    DOB: employeeDetails.DOB,
+    gender: employeeDetails.gender,
+    address: employeeDetails.address,
+    joinDate: employeeDetails.joinDate,
+    salary: employeeDetails.salary,
     empImage: ""
   })
+  
 
 //  console.log(employee);
 
@@ -35,15 +37,15 @@ function EditEmp({ employee }) {
   const handleClose = () => {
     setShow(false);
     setEmpDetails({
-      id: employee._id,
-      name: employee.name,
-      employeeID: employee.employeeID,
-      position: employee.position,
-      DOB: employee.DOB,
-      gender: employee.gender,
-      address: employee.address,
-      joinDate: employee.joinDate,
-      salary: employee.salary,
+      id: employeeDetails._id,
+      name: employeeDetails.name,
+      employeeID: employeeDetails.employeeID,
+      position: employeeDetails.position,
+      DOB: employeeDetails.DOB,
+      gender: employeeDetails.gender,
+      address: employeeDetails.address,
+      joinDate: employeeDetails.joinDate,
+      salary: employeeDetails.salary,
       empImage: ""
     })
     setPreview("")
@@ -64,7 +66,7 @@ function EditEmp({ employee }) {
       reqBody.append("address", address)
       reqBody.append("joinDate", joinDate)
       reqBody.append("salary", salary)
-      preview?reqBody.append("empImage",empImage):reqBody.append("empImage",employee.empImage)
+      preview?reqBody.append("empImage",empImage):reqBody.append("empImage",employeeDetails.empImage)
       const token = sessionStorage.getItem("token")
       if(preview){
         const reqHeader = {
@@ -107,6 +109,21 @@ function EditEmp({ employee }) {
     }
   }, [empDetails.empImage])
 
+  useEffect(() => {
+    setEmpDetails({
+      id: employeeDetails._id,
+      name: employeeDetails.name,
+      employeeID: employeeDetails.employeeID,
+      position: employeeDetails.position,
+      DOB: employeeDetails.DOB,
+      gender: employeeDetails.gender,
+      address: employeeDetails.address,
+      joinDate: employeeDetails.joinDate,
+      salary: employeeDetails.salary,
+      empImage: ""
+    });
+  }, [employeeDetails]);
+
   return (
     <>
       <button style={{ fontSize: '1.2rem', width: '120px' }} className='btn btn-outline-success text-capitalize mx-2 py-2' onClick={handleShow}>
@@ -134,7 +151,7 @@ function EditEmp({ employee }) {
                   width={'300px'}
                   className="img-fluid rounded"
                   alt="EmployeeImage"
-                  src={preview ? preview : `${SERVER_URL}/uploads/${employee.empImage}`}
+                  src={preview ? preview : `${SERVER_URL}/uploads/${employeeDetails.empImage}`}
                 />
               </label>
             </div>

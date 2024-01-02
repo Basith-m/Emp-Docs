@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { deleteEmployeeAPI, getAEmployeeAPI } from '../Services/allAPI';
 import { SERVER_URL } from '../Services/serverUrl';
 import EditEmp from '../Components/EditEmp';
-import { editEmployeeResponseContext } from '../Context/ContextShare';
+import { editEmployeeResponseContext, employeeDetailsContext } from '../Context/ContextShare';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -12,18 +12,17 @@ function ViewEmployee() {
 
   const navigate = useNavigate()
   const { editEmployeeResponse, setEditEmployeeResponse } = useContext(editEmployeeResponseContext)
+  const { employeeDetails, setEmployeeDetails } = useContext(employeeDetailsContext)
 
   const cellStyle = {
     border: 'none',
     padding: '10px',
   };
 
-  const [employeeDetails, setEmployeeDetails] = useState({})
-
   // get employeeID from url
   const { id } = useParams()
   // console.log(id);
-
+                                                                                                                                     
   // function for api call to get a employee details
   const getEmployeeDetails = async () => {
     if (sessionStorage.getItem("token")) {
@@ -109,7 +108,7 @@ function ViewEmployee() {
         </Col>
       </Row>
       <div className='mt-4 d-flex'>
-        <EditEmp employee={employeeDetails} />
+        <EditEmp />
         <button style={{ fontSize: '1.2rem', width: '120px' }} className='btn btn-outline-danger text-capitalize mx-2 py-2' onClick={() => handleDelete(employeeDetails._id)}>
           <i className="fa-solid fa-trash me-3"></i>
           Delete
