@@ -8,6 +8,7 @@ import ViewEmployee from './Pages/ViewEmployee'
 import Header from './Components/Header';
 import { tokenAuthorisationContext } from './Context/TokenAuth';
 import { useContext } from 'react';
+import Payment from './Pages/Payment';
 
 function App() {
   const { isAuthorized, setIsAuthorized } = useContext(tokenAuthorisationContext)
@@ -20,6 +21,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/employees' element={isAuthorized ? <Employees /> : <Home />} />
         <Route path='/viewEmployee/:id' element={isAuthorized ? <ViewEmployee /> : <Home />} />
+        <Route path='/payment' element={<Payment />} />
         <Route path='/*' element={<Navigate to={'/'} />} />
       </Routes>
     </div>

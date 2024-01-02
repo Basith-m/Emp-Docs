@@ -4,26 +4,35 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import profileImage from '../Assets/Images/default-profile-2.png'
 import { addEmployeeAPI } from '../Services/allAPI';
-import { addEmployeeResponseContext } from '../Context/ContextShare';
+import { addEmployeeResponseContext, paymentRespopnseContext } from '../Context/ContextShare';
+import { useNavigate } from 'react-router-dom';
 
 function AddEmp() {
+  const navigate = useNavigate()
   const [show, setShow] = useState(false);
   const [empDetails, setEmpDetails] = useState({
-    name: "", employeeID: "",firm:"", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
+    name: "", employeeID: "", firm: "", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
   })
+  const { isPyamentSuccess, setIsPayamentSuccess } = useContext(paymentRespopnseContext)
   // state for holding converted uploading image url
   const [preview, setPreview] = useState("")
   const [token, setToken] = useState("")
   // console.log(empDetails);
 
-  const{addEmpolyeeResponse,setAddEmployeeResponse} = useContext(addEmployeeResponseContext)
+  const { addEmpolyeeResponse, setAddEmployeeResponse } = useContext(addEmployeeResponseContext)
   // modal open
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    if (isPyamentSuccess) {
+      setShow(true);
+    } else {
+      navigate('/payment')
+    }
+  }
   // modal close
   const handleClose = () => {
     setShow(false);
     setEmpDetails({
-      name: "", employeeID: "", firm:"", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
+      name: "", employeeID: "", firm: "", position: "", DOB: "", gender: "", address: "", joinDate: "", salary: "", empImage: ""
     })
     setPreview("")
   }
