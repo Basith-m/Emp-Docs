@@ -170,14 +170,34 @@ function AddEmp() {
                   className="form-control"
                 />
               </div>
-              <div className="mb-3">
-                <input
-                  value={empDetails.gender}
-                  onChange={e => setEmpDetails({ ...empDetails, gender: e.target.value })}
-                  type="text"
-                  className="form-control"
-                  placeholder="Gender"
-                />
+              <div className="mb-3 d-flex justify-content-between pe-5">
+                <label>
+                  <input
+                    value="Male"
+                    onChange={e => setEmpDetails({ ...empDetails, gender: "Male" })}
+                    type="radio"
+                    name='radio'
+                  />
+                  <span className='ms-2'>Male</span>
+                </label>
+                <label>
+                  <input
+                    value="Female"
+                    onChange={e => setEmpDetails({ ...empDetails, gender: "Femail" })}
+                    type="radio"
+                    name='radio'
+                  />
+                  <span className='ms-2'>Female</span>
+                </label>
+                <label>
+                  <input
+                    value="Other"
+                    onChange={e => setEmpDetails({ ...empDetails, gender: "Other" })}
+                    type="radio"
+                    name='radio'
+                  />
+                  <span className='ms-2'>Other</span>
+                </label>
               </div>
               <div className="mb-3">
                 <textarea
